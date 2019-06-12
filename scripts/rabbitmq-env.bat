@@ -304,7 +304,7 @@ if "!RABBITMQ_ENABLED_PLUGINS_FILE!"=="" (
     set RABBITMQ_ENABLED_PLUGINS_FILE_source=environment
 )
 if not exist "!RABBITMQ_ENABLED_PLUGINS_FILE!" (
-    for /f "delims=" %%F in ("!RABBITMQ_ENABLED_PLUGINS_FILE!") do mkdir %%~dpF 2>NUL
+    for /f "delims=" %%F in ("!RABBITMQ_ENABLED_PLUGINS_FILE!") do mkdir "%%~dpF" 2>NUL
     copy /y NUL "!RABBITMQ_ENABLED_PLUGINS_FILE!" >NUL
 )
 
@@ -334,7 +334,7 @@ if "!RABBITMQ_LOGS!"=="" (
 )
 if not "!RABBITMQ_LOGS!" == "-" (
     if not exist "!RABBITMQ_LOGS!" (
-        for /f "delims=" %%F in ("!RABBITMQ_LOGS!") do mkdir %%~dpF 2>NUL
+        for /f "delims=" %%F in ("!RABBITMQ_LOGS!") do mkdir "%%~dpF" 2>NUL
         copy /y NUL "!RABBITMQ_LOGS!" >NUL
     )
 )
