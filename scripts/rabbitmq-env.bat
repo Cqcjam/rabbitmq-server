@@ -118,16 +118,6 @@ REM [ "x" = "x$RABBITMQ_NODE_PORT" ] && RABBITMQ_NODE_PORT=${NODE_PORT}
 REM [ "x" = "x$RABBITMQ_NODE_IP_ADDRESS" ] && [ "x" != "x$RABBITMQ_NODE_PORT" ] && RABBITMQ_NODE_IP_ADDRESS=${DEFAULT_NODE_IP_ADDRESS}
 REM [ "x" != "x$RABBITMQ_NODE_IP_ADDRESS" ] && [ "x" = "x$RABBITMQ_NODE_PORT" ] && RABBITMQ_NODE_PORT=${DEFAULT_NODE_PORT}
 
-REM if "!RABBITMQ_NODE_IP_ADDRESS!"=="" (
-REM    if not "!RABBITMQ_NODE_PORT!"=="" (
-REM       set RABBITMQ_NODE_IP_ADDRESS=auto
-REM    )
-REM ) else (
-REM    if "!RABBITMQ_NODE_PORT!"=="" (
-REM       set RABBITMQ_NODE_PORT=5672
-REM    )
-REM )
-
 if "!RABBITMQ_NODE_IP_ADDRESS!"=="" (
     if not "!NODE_IP_ADDRESS!"=="" (
         set RABBITMQ_NODE_IP_ADDRESS=!NODE_IP_ADDRESS!
@@ -172,7 +162,7 @@ if "!RABBITMQ_SERVER_ERL_ARGS!"=="" (
 )
 
 REM [ "x" = "x$RABBITMQ_CONFIG_FILE" ] && RABBITMQ_CONFIG_FILE=${CONFIG_FILE}
-CALL :unquote RABBITMQ_CONFIG_FILE %RABBITMQ_CONFIG_FILE%
+CALL :unquote RABBITMQ_CONFIG_FILE "%RABBITMQ_CONFIG_FILE%"
 if "!RABBITMQ_CONFIG_FILE!"=="" (
     if "!CONFIG_FILE!"=="" (
         set RABBITMQ_CONFIG_FILE=!RABBITMQ_BASE!\rabbitmq
@@ -189,7 +179,7 @@ if "!RABBITMQ_GENERATED_CONFIG_DIR!"=="" (
     )
 )
 
-CALL :unquote RABBITMQ_ADVANCED_CONFIG_FILE %RABBITMQ_ADVANCED_CONFIG_FILE%
+CALL :unquote RABBITMQ_ADVANCED_CONFIG_FILE "%RABBITMQ_ADVANCED_CONFIG_FILE%"
 if "!RABBITMQ_ADVANCED_CONFIG_FILE!"=="" (
     if "!ADVANCED_CONFIG_FILE!"=="" (
         set RABBITMQ_ADVANCED_CONFIG_FILE=!RABBITMQ_BASE!\advanced.config
@@ -371,10 +361,6 @@ if "!RABBITMQ_CTL_DIST_PORT_MAX!"=="" (
 )
 
 REM ADDITIONAL WINDOWS ONLY CONFIG ITEMS
-REM rabbitmq-plugins.bat
-REM if "!RABBITMQ_SERVICENAME!"=="" (
-REM     set RABBITMQ_SERVICENAME=RabbitMQ
-REM )
 
 if "!RABBITMQ_SERVICENAME!"=="" (
     if "!SERVICENAME!"=="" (
@@ -428,7 +414,7 @@ if defined RABBITMQ_DEV_ENV (
             ) else (
                 if exist "!RABBITMQ_HOME!\deps\rabbit_common\erlang.mk" (
                     REM Dependencies in the broker.
-                    set DEPS_DIR_norm="!RABBITMQ_HOME!\deps"
+                    set DEPS_DIR_norm=!RABBITMQ_HOME!\deps
                 )
             )
         ) else (
