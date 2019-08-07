@@ -162,7 +162,6 @@ if "!RABBITMQ_SERVER_ERL_ARGS!"=="" (
 )
 
 REM [ "x" = "x$RABBITMQ_CONFIG_FILE" ] && RABBITMQ_CONFIG_FILE=${CONFIG_FILE}
-CALL :unquote RABBITMQ_CONFIG_FILE "%RABBITMQ_CONFIG_FILE%"
 if "!RABBITMQ_CONFIG_FILE!"=="" (
     if "!CONFIG_FILE!"=="" (
         set RABBITMQ_CONFIG_FILE=!RABBITMQ_BASE!\rabbitmq
@@ -179,7 +178,6 @@ if "!RABBITMQ_GENERATED_CONFIG_DIR!"=="" (
     )
 )
 
-CALL :unquote RABBITMQ_ADVANCED_CONFIG_FILE "%RABBITMQ_ADVANCED_CONFIG_FILE%"
 if "!RABBITMQ_ADVANCED_CONFIG_FILE!"=="" (
     if "!ADVANCED_CONFIG_FILE!"=="" (
         set RABBITMQ_ADVANCED_CONFIG_FILE=!RABBITMQ_BASE!\advanced.config
@@ -473,7 +471,3 @@ REM ##--- End of overridden <var_name> variables
 REM
 REM # Since we source this elsewhere, don't accidentally stop execution
 REM true
-
-:unquote
-set %1=%~2
-EXIT /B 0
