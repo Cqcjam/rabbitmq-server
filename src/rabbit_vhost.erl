@@ -64,7 +64,7 @@ recover() ->
 
 recover(VHost) ->
     VHostDir = rabbit_vhost:msg_store_dir_path(VHost),
-    rabbit_log:info("Making sure data directory '~s' for vhost '~s' exists~n",
+    rabbit_log:info("Making sure data directory '~ts' for vhost '~s' exists~n",
                     [VHostDir, VHost]),
     VHostStubFile = filename:join(VHostDir, ".vhost"),
     ok = rabbit_file:ensure_dir(VHostStubFile),
