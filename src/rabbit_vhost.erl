@@ -295,7 +295,7 @@ dir(Vhost) ->
     rabbit_misc:format("~.36B", [Num]).
 
 msg_store_dir_path(VHost) ->
-    EncodedName = list_to_binary(dir(VHost)),
+    EncodedName = dir(VHost),
     rabbit_data_coercion:to_list(filename:join([msg_store_dir_base(),
                                                 EncodedName])).
 

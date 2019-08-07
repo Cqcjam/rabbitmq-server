@@ -431,7 +431,7 @@ if defined RABBITMQ_DEV_ENV (
     )
 )
 
-REM Ensure all paths in ERL_LIBS do not contains non-ASCII characters.
+REM Ensure ERL_LIBS begins with valid path
 set ERL_LIBS_orig=%ERL_LIBS%
 set ERL_LIBS=
 call :filter_paths "%ERL_LIBS_orig%"
@@ -448,7 +448,6 @@ set paths=
 exit /b
 
 :filter_path
-REM Ensure ERL_LIBS begins with valid path
 IF "%ERL_LIBS%"=="" (
     set ERL_LIBS=%~dp1%~n1%~x1
 ) else (
