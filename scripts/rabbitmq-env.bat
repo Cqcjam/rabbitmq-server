@@ -30,7 +30,10 @@ REM ## Set defaults
 call "%SCRIPT_DIR%\rabbitmq-defaults.bat"
 
 if "!RABBITMQ_CONF_ENV_FILE!"=="" (
+    call :dequote CONF_ENV_FILE
     set RABBITMQ_CONF_ENV_FILE=!CONF_ENV_FILE!
+) else (
+    call :dequote RABBITMQ_CONF_ENV_FILE
 )
 
 if exist "!RABBITMQ_CONF_ENV_FILE!" (
@@ -71,10 +74,6 @@ if "!RABBITMQ_MAX_NUMBER_OF_ATOMS!"=="" (
 
 REM Common defaults
 set SERVER_ERL_ARGS=+P !RABBITMQ_MAX_NUMBER_OF_PROCESSES! +t !RABBITMQ_MAX_NUMBER_OF_ATOMS! +stbt !RABBITMQ_SCHEDULER_BIND_TYPE! +zdbbl !RABBITMQ_DISTRIBUTION_BUFFER_SIZE!
-
-if not exist "!RABBITMQ_BASE!" (
-    mkdir "!RABBITMQ_BASE!"
-)
 
 REM Check for the short names here too
 if "!RABBITMQ_USE_LONGNAME!"=="true" (
@@ -166,32 +165,44 @@ if "!RABBITMQ_CONFIG_FILE!"=="" (
     if "!CONFIG_FILE!"=="" (
         set RABBITMQ_CONFIG_FILE=!RABBITMQ_BASE!\rabbitmq
     ) else (
+        call :dequote CONFIG_FILE
         set RABBITMQ_CONFIG_FILE=!CONFIG_FILE!
     )
+) else (
+    call :dequote RABBITMQ_CONFIG_FILE
 )
 
 if "!RABBITMQ_GENERATED_CONFIG_DIR!"=="" (
     if "!GENERATED_CONFIG_DIR!"=="" (
         set RABBITMQ_GENERATED_CONFIG_DIR=!RABBITMQ_BASE!\config
     ) else (
+        call :dequote GENERATED_CONFIG_DIR
         set RABBITMQ_GENERATED_CONFIG_DIR=!GENERATED_CONFIG_DIR!
     )
+) else (
+    call :dequote RABBITMQ_GENERATED_CONFIG_DIR
 )
 
 if "!RABBITMQ_ADVANCED_CONFIG_FILE!"=="" (
     if "!ADVANCED_CONFIG_FILE!"=="" (
         set RABBITMQ_ADVANCED_CONFIG_FILE=!RABBITMQ_BASE!\advanced.config
     ) else (
+        call :dequote ADVANCED_CONFIG_FILE
         set RABBITMQ_ADVANCED_CONFIG_FILE=!ADVANCED_CONFIG_FILE!
     )
+) else (
+    call :dequote RABBITMQ_ADVANCED_CONFIG_FILE
 )
 
 if "!RABBITMQ_SCHEMA_DIR!" == "" (
     if "!SCHEMA_DIR!"=="" (
         set RABBITMQ_SCHEMA_DIR=!RABBITMQ_HOME!\priv\schema
     ) else (
+        call :dequote SCHEMA_DIR
         set RABBITMQ_SCHEMA_DIR=!SCHEMA_DIR!
     )
+) else (
+    call :dequote RABBITMQ_SCHEMA_DIR
 )
 
 REM [ "x" = "x$RABBITMQ_LOG_BASE" ] && RABBITMQ_LOG_BASE=${LOG_BASE}
@@ -199,8 +210,11 @@ if "!RABBITMQ_LOG_BASE!"=="" (
     if "!LOG_BASE!"=="" (
         set RABBITMQ_LOG_BASE=!RABBITMQ_BASE!\log
     ) else (
+        call :dequote LOG_BASE
         set RABBITMQ_LOG_BASE=!LOG_BASE!
     )
+) else (
+    call :dequote RABBITMQ_LOG_BASE
 )
 if not exist "!RABBITMQ_LOG_BASE!" (
     mkdir "!RABBITMQ_LOG_BASE!"
@@ -211,8 +225,11 @@ if "!RABBITMQ_MNESIA_BASE!"=="" (
     if "!MNESIA_BASE!"=="" (
         set RABBITMQ_MNESIA_BASE=!RABBITMQ_BASE!\db
     ) else (
+        call :dequote MNESIA_BASE
         set RABBITMQ_MNESIA_BASE=!MNESIA_BASE!
     )
+) else (
+    call :dequote RABBITMQ_MNESIA_BASE
 )
 if not exist "!RABBITMQ_MNESIA_BASE!" (
     mkdir "!RABBITMQ_MNESIA_BASE!"
@@ -238,8 +255,11 @@ if "!RABBITMQ_MNESIA_DIR!"=="" (
     if "!MNESIA_DIR!"=="" (
         set RABBITMQ_MNESIA_DIR=!RABBITMQ_MNESIA_BASE!\!RABBITMQ_NODENAME!-mnesia
     ) else (
+        call :dequote MNESIA_DIR
         set RABBITMQ_MNESIA_DIR=!MNESIA_DIR!
     )
+) else (
+    call :dequote RABBITMQ_MNESIA_DIR
 )
 if not exist "!RABBITMQ_MNESIA_DIR!" (
     mkdir "!RABBITMQ_MNESIA_DIR!"
@@ -263,8 +283,11 @@ if "!RABBITMQ_FEATURE_FLAGS_FILE!"=="" (
     if "!FEATURE_FLAGS_FILE!"=="" (
         set RABBITMQ_FEATURE_FLAGS_FILE=!RABBITMQ_MNESIA_BASE!\!RABBITMQ_NODENAME!-feature_flags
     ) else (
+        call :dequote FEATURE_FLAGS_FILE
         set RABBITMQ_FEATURE_FLAGS_FILE=!FEATURE_FLAGS_FILE!
     )
+) else (
+    call :dequote RABBITMQ_FEATURE_FLAGS_FILE
 )
 
 REM [ "x" = "x$RABBITMQ_PLUGINS_EXPAND_DIR" ] && RABBITMQ_PLUGINS_EXPAND_DIR=${PLUGINS_EXPAND_DIR}
@@ -273,22 +296,23 @@ if "!RABBITMQ_PLUGINS_EXPAND_DIR!"=="" (
     if "!PLUGINS_EXPAND_DIR!"=="" (
         set RABBITMQ_PLUGINS_EXPAND_DIR=!RABBITMQ_MNESIA_BASE!\!RABBITMQ_NODENAME!-plugins-expand
     ) else (
+        call :dequote PLUGINS_EXPAND_DIR
         set RABBITMQ_PLUGINS_EXPAND_DIR=!PLUGINS_EXPAND_DIR!
     )
+) else (
+    call :dequote RABBITMQ_PLUGINS_EXPAND_DIR
 )
-REM FIXME: RabbitMQ removes and recreates RABBITMQ_PLUGINS_EXPAND_DIR
-REM itself. Therefore we can't create it here in advance and escape the
-REM directory name, and RABBITMQ_PLUGINS_EXPAND_DIR must not contain
-REM non-US-ASCII characters.
 
 REM [ "x" = "x$RABBITMQ_ENABLED_PLUGINS_FILE" ] && RABBITMQ_ENABLED_PLUGINS_FILE=${ENABLED_PLUGINS_FILE}
 if "!RABBITMQ_ENABLED_PLUGINS_FILE!"=="" (
     if "!ENABLED_PLUGINS_FILE!"=="" (
         set RABBITMQ_ENABLED_PLUGINS_FILE=!RABBITMQ_BASE!\enabled_plugins
     ) else (
+        call :dequote ENABLED_PLUGINS_FILE
         set RABBITMQ_ENABLED_PLUGINS_FILE=!ENABLED_PLUGINS_FILE!
     )
 ) else (
+    call :dequote RABBITMQ_ENABLED_PLUGINS_FILE
     set RABBITMQ_ENABLED_PLUGINS_FILE_source=environment
 )
 if not exist "!RABBITMQ_ENABLED_PLUGINS_FILE!" (
@@ -301,9 +325,11 @@ if "!RABBITMQ_PLUGINS_DIR!"=="" (
     if "!PLUGINS_DIR!"=="" (
         set RABBITMQ_PLUGINS_DIR=!RABBITMQ_HOME!\plugins
     ) else (
+        call :dequote PLUGINS_DIR
         set RABBITMQ_PLUGINS_DIR=!PLUGINS_DIR!
     )
 ) else (
+    call :dequote RABBITMQ_PLUGINS_DIR
     set RABBITMQ_PLUGINS_DIR_source=environment
 )
 if not exist "!RABBITMQ_PLUGINS_DIR!" (
@@ -317,8 +343,11 @@ if "!RABBITMQ_LOGS!"=="" (
     if "!LOGS!"=="" (
         set RABBITMQ_LOGS=!RABBITMQ_LOG_BASE!\!RABBITMQ_NODENAME!.log
     ) else (
+        call :dequote LOGS
         set RABBITMQ_LOGS=!LOGS!
     )
+) else (
+    call :dequote RABBITMQ_LOGS
 )
 if not "!RABBITMQ_LOGS!" == "-" (
     if not exist "!RABBITMQ_LOGS!" (
@@ -329,10 +358,14 @@ if not "!RABBITMQ_LOGS!" == "-" (
 rem [ "x" = "x$RABBITMQ_UPGRADE_LOG" ] && RABBITMQ_UPGRADE_LOG="${RABBITMQ_LOG_BASE}/${RABBITMQ_NODENAME}_upgrade.log"
 if "!RABBITMQ_UPGRADE_LOG!" == "" (
     set RABBITMQ_UPGRADE_LOG=!RABBITMQ_LOG_BASE!\!RABBITMQ_NODENAME!_upgrade.log
+) else (
+    call :dequote RABBITMQ_UPGRADE_LOG
 )
 REM [ "x" = "x$ERL_CRASH_DUMP"] && ERL_CRASH_DUMP="${RABBITMQ_LOG_BASE}/erl_crash.dump"
 if "!ERL_CRASH_DUMP!"=="" (
     set ERL_CRASH_DUMP=!RABBITMQ_LOG_BASE!\erl_crash.dump
+) else (
+    call :dequote ERL_CRASH_DUMP
 )
 
 REM [ "x" = "x$RABBITMQ_CTL_ERL_ARGS" ] && RABBITMQ_CTL_ERL_ARGS=${CTL_ERL_ARGS}
@@ -429,7 +462,12 @@ if defined RABBITMQ_DEV_ENV (
     )
 )
 
+:dequote
+for /f "delims=" %%A in ('echo %%%1%%') do set %1=%%~A
+goto :eof
+
 REM Ensure ERL_LIBS begins with valid path
+call :dequote ERL_LIBS
 set ERL_LIBS_orig=%ERL_LIBS%
 set ERL_LIBS=
 call :filter_paths "%ERL_LIBS_orig%"
@@ -443,7 +481,7 @@ for /f "tokens=1* delims=;" %%a in ("%paths%") do (
     if not "%%b" == "" call :filter_paths "%%b"
 )
 set paths=
-exit /b
+goto :eof
 
 :filter_path
 IF "%ERL_LIBS%"=="" (
@@ -451,7 +489,7 @@ IF "%ERL_LIBS%"=="" (
 ) else (
     set ERL_LIBS=%ERL_LIBS%;%~dp1%~n1%~x1
 )
-exit /b
+goto :eof
 
 :filter_paths_done
 
