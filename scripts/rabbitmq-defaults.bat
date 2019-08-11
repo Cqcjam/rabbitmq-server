@@ -22,11 +22,9 @@ REM ## Set default values
 if "!RABBITMQ_BASE!"=="" (
     set RABBITMQ_BASE=!APPDATA!\RabbitMQ
 ) else (
-    call :dequote RABBITMQ_BASE
+    set RABBITMQ_BASE=!RABBITMQ_BASE:"=!
 )
 
-REM We create the directory first so we don't end up creating it later
-REM in its "short filename" version.
 if not exist "!RABBITMQ_BASE!" (
     mkdir "!RABBITMQ_BASE!"
 )
@@ -50,8 +48,4 @@ for /f "delims=" %%F in ("!TDP0!..\plugins") do set PLUGINS_DIR=%%~dpF%%~nF%%~xF
 
 REM CONF_ENV_FILE=${SYS_PREFIX}/etc/rabbitmq/rabbitmq-env.conf
 set CONF_ENV_FILE=!RABBITMQ_BASE!\rabbitmq-env-conf.bat
-goto :eof
-
-:dequote
-for /f "delims=" %%A in ('echo %%%1%%') do set %1=%%~A
 goto :eof
